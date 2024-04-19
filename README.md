@@ -56,3 +56,46 @@ lexflow newdag --dag_name=<dag_name> --tasks=<tasks>
 
 --dag_name: The name of the new DAG. This argument is required.
 --tasks: The tasks for the new DAG. Defaults to 'task', or you can use 'task1>>task2>>task3' to create 3 tasks inside the dag file
+
+## Implementating this image to you docker image or devcontainer
+### Dockerimage
+```console
+FROM lexdrel/airflow-2.6.3-python-3.11
+
+# your custom docker procedure
+```
+
+### devcontainer
+Inside a devcontainer.json copy and paste this code:
+```console
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+{
+	"name": "Airflow Standalone",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "lexdrel/airflow-2.6.3-python-3.11",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"GitHub.github-vscode-theme",
+				"alexcvzz.vscode-sqlite",
+				"ms-python.python"
+			]
+		}
+	}
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "pip3 install --user -r requirements.txt",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
+```
