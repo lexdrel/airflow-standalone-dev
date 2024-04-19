@@ -3,6 +3,8 @@ FROM python:3.11.9-bullseye
 RUN apt-get update && apt-get install -y \
     gcc \
     libpq-dev \
+    sudo \
+    lsof \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt requirements.txt

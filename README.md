@@ -62,6 +62,9 @@ lexflow newdag --dag_name=<dag_name> --tasks=<tasks>
 ```console
 FROM lexdrel/airflow-2.6.3-python-3.11
 
+# This will set the airflow folder
+RUN export AIRFLOW_HOME=\"${PWD#$HOME/}/airflow\"' >> ~/.bashrc
+
 # your custom docker procedure
 ```
 
@@ -81,7 +84,7 @@ Inside a devcontainer.json copy and paste this code:
 				"ms-python.python"
 			]
 		}
-	}
+	},
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -90,7 +93,7 @@ Inside a devcontainer.json copy and paste this code:
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "pip3 install --user -r requirements.txt",
+	"postCreateCommand": "echo 'export AIRFLOW_HOME=\"${PWD#$HOME/}/airflow\"' >> ~/.bashrc"
 
 	// Configure tool-specific properties.
 	// "customizations": {},

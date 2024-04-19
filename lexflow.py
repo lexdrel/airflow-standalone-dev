@@ -9,7 +9,12 @@ def init(args):
     BPurple='\033[1;35m'      
     BCyan='\033[1;36m'        
     NC='\033[0m' # No Color
-    AIRFLOW_HOME = args.AIRFLOW_HOME
+    AIRFLOW_HOME = os.getenv('AIRFLOW_HOME')
+    if not AIRFLOW_HOME:
+        print("AIRFLOW_HOME is not set in ~/.bashrc")
+        print("Please set AIRFLOW_HOME in ~/.bashrc")
+        return
+
     AIRFLOW_VERSION = args.AIRFLOW_VERSION
     PYTHON_VERSION = args.PYTHON_VERSION
     CONSTRAINT_URL = f"https://raw.githubusercontent.com/apache/airflow/constraints-{AIRFLOW_VERSION}/constraints-{PYTHON_VERSION}.txt"
@@ -22,11 +27,11 @@ def init(args):
     if not os.path.exists(AIRFLOW_HOME):
         os.makedirs(AIRFLOW_HOME)
 
-    FULL_AIRFLOW_HOME = os.path.abspath(AIRFLOW_HOME)
+    # FULL_AIRFLOW_HOME = os.path.abspath(AIRFLOW_HOME)
+    # echo 'export AIRFLOW_HOME="{FULL_AIRFLOW_HOME}"' >> ~/.bashrc 
 
     script = f"""
     export AIRFLOW_HOME="{AIRFLOW_HOME}"
-    echo 'export AIRFLOW_HOME="{FULL_AIRFLOW_HOME}"' >> ~/.bashrc 
     echo "This CLI command is based on the repo https://github.com/LinkedInLearning/hands-on-introduction-data-engineering-4395021"
     echo "{BRed}Thanks to the LinkedIn Learning Team for the original script{NC}"
     echo "Airflow home is set to: {AIRFLOW_HOME}"
@@ -127,9 +132,9 @@ with DAG(
         f.write("\n    " + " >> ".join(tasks))
 
 def help(args):
-    print("lexflow init --AIRFLOW_HOME /airflow --AIRFLOW_VERSION 2.6.3 --PYTHON_VERSION 3.11 --username admin --firstname Firstname --lastname Lastname --email admin@example.org --password password")
+    print("lexflow init --AIRFLOW_VERSION 2.6.3 --PYTHON_VERSION 3.11 --username admin --firstname Firstname --lastname Lastname --email admin@example.org --password password")
     print("Options:")
-    print("  --AIRFLOW_HOME     Specify the airflow home directory (default: ./airflow)")
+    # print("  --AIRFLOW_HOME     Specify the airflow home directory (default: ./airflow)")
     print("  --AIRFLOW_VERSION  Specify the airflow version (default: 2.6.3)")
     print("  --PYTHON_VERSION   Specify the python version (default: 3.11)")
     print("  --username         Specify the username (default: admin)")
@@ -163,7 +168,6 @@ def main():
 
     init_parser = subparsers.add_parser('init')
     absolute_path = os.path.join(os.path.abspath(os.getcwd()), 'airflow')
-    init_parser.add_argument('--AIRFLOW_HOME', default=absolute_path)
     init_parser.add_argument('--AIRFLOW_VERSION', default="2.6.3")
     init_parser.add_argument('--PYTHON_VERSION', default="3.11")
     init_parser.add_argument('--username', default="admin")
